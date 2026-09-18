@@ -34,6 +34,15 @@ The backend repository is the source of truth for:
 - Entity relationships
 - API error responses
 
+## Deployment
+
+The frontend is deployed on [Cloudflare Pages](https://pages.cloudflare.com).
+
+**Live app:** https://teamsync-cycling.pages.dev
+
+Deployments are triggered automatically on every push to `master`.
+The production API URL is configured in `.env.production`.
+
 ## Features
 
 - JWT manager authentication
