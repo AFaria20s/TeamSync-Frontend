@@ -1,5 +1,4 @@
-// Keep browser requests same-origin in development; Vite proxies /api to Spring Boot.
-const API_URL = import.meta.env.VITE_API_URL || '/api';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export class ApiError extends Error {
   constructor(message, status) { super(message); this.status = status; }

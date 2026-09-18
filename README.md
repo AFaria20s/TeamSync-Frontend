@@ -92,7 +92,7 @@ The frontend is available at:
 http://localhost:3000
 ```
 
-During development, Vite proxies `/api` requests to:
+During development, Vite proxies requests to the API URL configured in `.env`:
 
 ```text
 http://localhost:8080
@@ -102,7 +102,7 @@ Start the backend separately by following the instructions in the [TeamSync Back
 
 ## Configuration
 
-By default, the frontend uses a same-origin `/api` path. This is the recommended development setup because Vite forwards requests to the local backend.
+The API base URL is configured with `VITE_API_URL`. For local development, copy the example environment file:
 
 For a deployment where the API is exposed through a different public base URL, create a local environment file:
 
@@ -110,13 +110,13 @@ For a deployment where the API is exposed through a different public base URL, c
 cp .env.example .env.local
 ```
 
-Then configure:
+For production, `.env.production` configures the deployed backend URL. To override the API URL locally, configure:
 
 ```env
 VITE_API_URL=https://your-api.example.com/api
 ```
 
-Never commit `.env.local` or production environment files. Environment files containing credentials or private infrastructure details are excluded by `.gitignore`.
+Never commit `.env` or `.env.local`. The checked-in `.env.example` and `.env.production` files contain non-secret API URLs.
 
 ## Project structure
 
