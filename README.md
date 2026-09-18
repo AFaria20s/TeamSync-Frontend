@@ -1,8 +1,24 @@
+<div align="center">
+
+<img src="public/logo_teamsync.png" alt="TeamSync logo" width="140" />
+
 # TeamSync Frontend
 
-Modern React + Vite web application for managing cycling teams, athletes, staff, sponsors, addresses, disciplines and competitions.
+A modern React application for managing cycling teams, athletes, staff, sponsors, competitions, and team operations.
 
-The frontend consumes the real TeamSync REST API. It does not contain demo data or a mock server.
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![React Router](https://img.shields.io/badge/React%20Router-6-CA4245?style=flat-square&logo=reactrouter&logoColor=white)](https://reactrouter.com/)
+[![API](https://img.shields.io/badge/API-TeamSync%20Backend-black?style=flat-square)](https://github.com/AFaria20s/TeamSync-Backend)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://github.com/AFaria20s/TeamSync-Backend)
+
+</div>
+
+---
+
+## Overview
+
+TeamSync Frontend is the web interface for a cycling team management platform. It consumes the real TeamSync REST API and does not contain demo data or a mock server.
 
 ## Related project
 
