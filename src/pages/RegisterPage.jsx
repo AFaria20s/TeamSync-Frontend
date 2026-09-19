@@ -6,28 +6,33 @@ import LanguageSelector from "../components/ui/LanguageSelector";
 import { useLanguage } from "../context/LanguageContext";
 import SiteFooter from "../components/layout/SiteFooter";
 
-export default function LoginPage() {
-  const { token, signIn } = useAuth();
+export default function RegisterPage() {
+  const { token, signUp } = useAuth();
   const { t } = useLanguage();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
   if (token) return <Navigate to="/dashboard" replace />;
+
   async function submit(event) {
     event.preventDefault();
     setLoading(true);
     setError("");
     const form = new FormData(event.currentTarget);
     try {
-      await signIn({
+      await signUp({
+        managerName: form.get("managerName"),
         email: form.get("email"),
         password: form.get("password"),
+        teamName: form.get("teamName"),
       });
     } catch (reason) {
-      setError(reason.message || "Não foi possível iniciar sessão.");
+      setError(reason.message || t("register.error"));
     } finally {
       setLoading(false);
     }
   }
+
   return (
     <>
       <div className="login-shell">
@@ -49,10 +54,28 @@ export default function LoginPage() {
             <LanguageSelector />
           </div>
           <form className="login-form" onSubmit={submit}>
-            <span className="eyebrow">{t("login.welcome")}</span>
-            <h2>{t("login.heading")}</h2>
-            <p>{t("login.subheading")}</p>
+            <span className="eyebrow">{t("register.welcome")}</span>
+            <h2>{t("register.heading")}</h2>
+            <p>{t("register.subheading")}</p>
             <Alert message={error} />
+            <label>
+              {t("register.managerName")}
+              <input
+                name="managerName"
+                type="text"
+                required
+                autoComplete="name"
+              />
+            </label>
+            <label>
+              {t("register.teamName")}
+              <input
+                name="teamName"
+                type="text"
+                required
+                autoComplete="organization"
+              />
+            </label>
             <label>
               {t("login.email")}
               <input
@@ -60,6 +83,7 @@ export default function LoginPage() {
                 type="email"
                 required
                 placeholder="name@team.com"
+                autoComplete="email"
               />
             </label>
             <label>
@@ -69,14 +93,15 @@ export default function LoginPage() {
                 type="password"
                 required
                 placeholder="••••••••"
+                autoComplete="new-password"
               />
             </label>
             <button className="primary-button login-button" disabled={loading}>
-              {loading ? t("login.validating") : t("login.submit")}
+              {loading ? t("register.creating") : t("register.submit")}
             </button>
             <p className="auth-switch">
-              {t("login.noAccount")}{" "}
-              <Link to="/register">{t("login.register")}</Link>
+              {t("register.hasAccount")}{" "}
+              <Link to="/login">{t("register.signIn")}</Link>
             </p>
           </form>
         </div>
