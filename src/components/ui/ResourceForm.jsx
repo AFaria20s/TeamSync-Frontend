@@ -1,13 +1,135 @@
-import { useState } from 'react';
-import Icon from './Icon';
-import { useLanguage } from '../../context/LanguageContext';
+import { useState } from "react";
+import Icon from "./Icon";
+import { useLanguage } from "../../context/LanguageContext";
 
-export default function ResourceForm({ fields, initial = {}, submitLabel = 'Guardar', onSubmit, onClose }) {
+export default function ResourceForm({
+  fields,
+  initial = {},
+  submitLabel = "Guardar",
+  onSubmit,
+  onClose,
+}) {
   const [values, setValues] = useState(initial);
-  const [newAddress, setNewAddress] = useState({ street: '', city: '', district: '', postalCode: '', country: '' });
+  const [newAddress, setNewAddress] = useState({
+    street: "",
+    city: "",
+    district: "",
+    postalCode: "",
+    country: "",
+  });
   const { t } = useLanguage();
-  function change(event) { setValues({ ...values, [event.target.name]: event.target.value }); }
-  function addressChange(event) { setNewAddress({ ...newAddress, [event.target.name]: event.target.value }); }
-  const addressField = fields.find((field) => field.name === 'addressId' && field.source === 'addresses');
-  return <div className="modal-backdrop"><form className="modal" onSubmit={(event) => { event.preventDefault(); onSubmit(values, newAddress); }}><button type="button" className="modal-close" onClick={onClose}>×</button><h2>{submitLabel}</h2><div className="form-grid">{fields.map((field) => <label className={field.type === 'checkbox' ? 'checkbox-field' : ''} key={field.name}>{field.type === 'checkbox' ? <><input name={field.name} type="checkbox" checked={Boolean(values[field.name])} onChange={(event) => setValues({ ...values, [field.name]: event.target.checked })} /> {field.label}</> : <>{field.label}{field.type === 'textarea' ? <textarea required={field.required !== false} name={field.name} value={values[field.name] || ''} onChange={change} placeholder={field.placeholder} /> : field.type === 'select' ? <select required={field.required !== false} name={field.name} value={values[field.name] || ''} onChange={change}><option value="">{t('common.select')}</option>{(field.options || []).map((option) => <option value={option.value} key={option.value}>{option.label}</option>)}{field.source === 'addresses' && <option value="__new__">{t('common.createAddress')}</option>}</select> : <input required={field.required !== false} name={field.name} type={field.type || 'text'} value={values[field.name] || ''} onChange={change} placeholder={field.placeholder} />}</>}</label>)}</div>{addressField && values.addressId === '__new__' && <div className="inline-address"><strong>{t('common.newAddress')}</strong><div className="form-grid">{['street', 'city', 'district', 'postalCode', 'country'].map((name) => <label key={name}>{t(`fields.${name}`)}<input name={name} value={newAddress[name]} required={name === 'street' || name === 'city'} onChange={addressChange} /></label>)}</div></div>}<button className="primary-button modal-submit" type="submit">{submitLabel} <Icon name="arrow" size={15} /></button></form></div>;
+  function change(event) {
+    setValues({ ...values, [event.target.name]: event.target.value });
+  }
+  function addressChange(event) {
+    setNewAddress({ ...newAddress, [event.target.name]: event.target.value });
+  }
+  const addressField = fields.find(
+    (field) => field.name === "addressId" && field.source === "addresses",
+  );
+  return (
+    <div className="modal-backdrop">
+      <form
+        className="modal"
+        onSubmit={(event) => {
+          event.preventDefault();
+          onSubmit(values, newAddress);
+        }}
+      >
+        <button type="button" className="modal-close" onClick={onClose}>
+          ×
+        </button>
+        <h2>{submitLabel}</h2>
+        <div className="form-grid">
+          {fields.map((field) => (
+            <label
+              className={field.type === "checkbox" ? "checkbox-field" : ""}
+              key={field.name}
+            >
+              {field.type === "checkbox" ? (
+                <>
+                  <input
+                    name={field.name}
+                    type="checkbox"
+                    checked={Boolean(values[field.name])}
+                    onChange={(event) =>
+                      setValues({
+                        ...values,
+                        [field.name]: event.target.checked,
+                      })
+                    }
+                  />{" "}
+                  {field.label}
+                </>
+              ) : (
+                <>
+                  {field.label}
+                  {field.type === "textarea" ? (
+                    <textarea
+                      required={field.required !== false}
+                      name={field.name}
+                      value={values[field.name] || ""}
+                      onChange={change}
+                      placeholder={field.placeholder}
+                    />
+                  ) : field.type === "select" ? (
+                    <select
+                      required={field.required !== false}
+                      name={field.name}
+                      value={values[field.name] || ""}
+                      onChange={change}
+                    >
+                      <option value="">{t("common.select")}</option>
+                      {(field.options || []).map((option) => (
+                        <option value={option.value} key={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                      {field.source === "addresses" && (
+                        <option value="__new__">
+                          {t("common.createAddress")}
+                        </option>
+                      )}
+                    </select>
+                  ) : (
+                    <input
+                      required={field.required !== false}
+                      name={field.name}
+                      type={field.type || "text"}
+                      value={values[field.name] || ""}
+                      onChange={change}
+                      placeholder={field.placeholder}
+                    />
+                  )}
+                </>
+              )}
+            </label>
+          ))}
+        </div>
+        {addressField && values.addressId === "__new__" && (
+          <div className="inline-address">
+            <strong>{t("common.newAddress")}</strong>
+            <div className="form-grid">
+              {["street", "city", "district", "postalCode", "country"].map(
+                (name) => (
+                  <label key={name}>
+                    {t(`fields.${name}`)}
+                    <input
+                      name={name}
+                      value={newAddress[name]}
+                      required={name === "street" || name === "city"}
+                      onChange={addressChange}
+                    />
+                  </label>
+                ),
+              )}
+            </div>
+          </div>
+        )}
+        <button className="primary-button modal-submit" type="submit">
+          {submitLabel} <Icon name="arrow" size={15} />
+        </button>
+      </form>
+    </div>
+  );
 }
