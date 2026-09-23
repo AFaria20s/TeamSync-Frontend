@@ -4,6 +4,7 @@ import Alert from "../components/ui/Alert";
 import Loading from "../components/ui/Loading";
 import PageHeader from "../components/ui/PageHeader";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
 
 export default function TeamSettingsPage() {
   const [team, setTeam] = useState(null);
@@ -18,7 +19,9 @@ export default function TeamSettingsPage() {
   });
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
+  const [pictureBusy, setPictureBusy] = useState(false);
   const { t } = useLanguage();
+  const { updateManager: updateAuthManager } = useAuth();
   useEffect(() => {
     Promise.all([api.team(), api.manager(), api.list("addresses")])
       .then(([currentTeam, currentManager, currentAddresses]) => {
@@ -39,6 +42,51 @@ export default function TeamSettingsPage() {
         {error && <Alert message={error} />}
       </div>
     );
+  async function changeProfilePicture(event) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      setError(t("settings.profilePictureType"));
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError(t("settings.profilePictureSize"));
+      return;
+    }
+    setPictureBusy(true);
+    try {
+      const updatedManager = await api.uploadManagerProfilePicture(file);
+      setManager(updatedManager);
+      updateAuthManager(updatedManager);
+      setError("");
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } catch (reason) {
+      setError(
+        `Erro do backend: ${reason.message}${reason.status ? ` (HTTP ${reason.status})` : ""}`,
+      );
+    } finally {
+      setPictureBusy(false);
+    }
+  }
+
+  async function removeProfilePicture() {
+    setPictureBusy(true);
+    try {
+      const updatedManager = await api.removeManagerProfilePicture();
+      setManager(updatedManager);
+      updateAuthManager(updatedManager);
+      setError("");
+    } catch (reason) {
+      setError(
+        `Erro do backend: ${reason.message}${reason.status ? ` (HTTP ${reason.status})` : ""}`,
+      );
+    } finally {
+      setPictureBusy(false);
+    }
+  }
+
   async function save(event) {
     event.preventDefault();
     try {
@@ -60,7 +108,10 @@ export default function TeamSettingsPage() {
         }),
       ]);
       if (updatedTeam) setTeam(updatedTeam);
-      if (updatedManager) setManager(updatedManager);
+      if (updatedManager) {
+        setManager(updatedManager);
+        updateAuthManager(updatedManager);
+      }
       setError("");
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);
@@ -147,6 +198,41 @@ export default function TeamSettingsPage() {
           </label>
         </div>
         <h3 className="settings-section-title">{t("settings.manager")}</h3>
+        <div className="profile-picture-settings">
+          <div className="profile-picture-preview">
+            {manager.profilePicUrl ? (
+              <img src={manager.profilePicUrl} alt={manager.name || "Manager"} />
+            ) : (
+              manager.name?.slice(0, 2).toUpperCase() || "TM"
+            )}
+          </div>
+          <div>
+            <strong>{t("settings.profilePicture")}</strong>
+            <p>{t("settings.profilePictureHint")}</p>
+            <div className="profile-picture-actions">
+              <label className="secondary-button">
+                {pictureBusy ? t("common.loading") : t("settings.choosePicture")}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={changeProfilePicture}
+                  disabled={pictureBusy}
+                  hidden
+                />
+              </label>
+              {manager.profilePicUrl && (
+                <button
+                  type="button"
+                  className="text-button danger"
+                  onClick={removeProfilePicture}
+                  disabled={pictureBusy}
+                >
+                  {t("settings.removePicture")}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
         <div className="settings-fields">
           <label>
             {t("settings.name")}
