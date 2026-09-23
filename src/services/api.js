@@ -10,11 +10,15 @@ export class ApiError extends Error {
 async function request(path, options = {}) {
   const token = localStorage.getItem("teamsync_token");
   const headers = new Headers(options.headers);
-  if (!headers.has("Content-Type") && options.body)
+  if (
+    !headers.has("Content-Type") &&
+    options.body &&
+    !(options.body instanceof FormData)
+  )
     headers.set("Content-Type", "application/json");
   if (token) headers.set("Authorization", `Bearer ${token}`);
   const response = await fetch(`${API_URL}${path}`, { ...options, headers });
-  if (response.status === 401 || response.status === 403) {
+  if (response.status === 401) {
     localStorage.removeItem("teamsync_token");
     window.dispatchEvent(new Event("teamsync:unauthorized"));
   }
@@ -60,6 +64,13 @@ export const api = {
       method: "PUT",
       body: JSON.stringify(manager),
     }),
+  uploadManagerProfilePicture: (file) => {
+    const body = new FormData();
+    body.append("file", file);
+    return request("/manager/profile-picture", { method: "PUT", body });
+  },
+  removeManagerProfilePicture: () =>
+    request("/manager/profile-picture", { method: "DELETE" }),
   team: () => request("/team"),
   updateTeam: (team) =>
     request("/team/update", { method: "PUT", body: JSON.stringify(team) }),

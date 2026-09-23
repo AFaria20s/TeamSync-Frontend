@@ -81,7 +81,11 @@ export default function AppLayout() {
             <LanguageSelector compact />
             <div className="manager-chip">
               <div className="avatar">
-                {manager?.name?.slice(0, 2).toUpperCase() || "TM"}
+                {manager?.profilePicUrl ? (
+                  <img src={manager.profilePicUrl} alt="" />
+                ) : (
+                  manager?.name?.slice(0, 2).toUpperCase() || "TM"
+                )}
               </div>
               <span>{manager?.name || t("nav.team")}</span>
             </div>
