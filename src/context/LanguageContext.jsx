@@ -50,6 +50,10 @@ const translations = {
     "login.password": "Password",
     "login.submit": "Sign in",
     "login.validating": "Checking...",
+    "login.emailNotVerified":
+      "Your email is not verified. Check your inbox for the verification link.",
+    "login.invalidCredentials": "Invalid email or password.",
+    "login.error": "Could not sign in. Please try again.",
     "login.noAccount": "Don't have an account?",
     "login.register": "Create one",
     "login.footer": "Built for teams that go further.",
@@ -63,6 +67,23 @@ const translations = {
     "register.hasAccount": "Already have an account?",
     "register.signIn": "Sign in",
     "register.error": "Could not create your account.",
+    "verification.eyebrow": "EMAIL VERIFICATION",
+    "verification.loadingTitle": "Verifying your email",
+    "verification.loadingDescription": "We are confirming your email address.",
+    "verification.waitingTitle": "Check your inbox",
+    "verification.waitingDescription": "We sent a verification link to {email}.",
+    "verification.waitingDescriptionGeneric":
+      "We sent a verification link to your email address.",
+    "verification.checkInbox":
+      "Open the link in the email to activate your account.",
+    "verification.successTitle": "Email verified",
+    "verification.successDescription":
+      "Your account is active. You can now sign in.",
+    "verification.errorTitle": "Verification failed",
+    "verification.errorDescription":
+      "The verification link may be invalid or expired.",
+    "verification.error": "We could not verify your email.",
+    "verification.goToLogin": "Go to sign in",
     "dashboard.eyebrow": "OVERVIEW",
     "dashboard.greeting": "Good morning, {name} 👋",
     "dashboard.description": "Here is what is happening with your team.",
@@ -242,6 +263,10 @@ const translations = {
     "login.password": "Password",
     "login.submit": "Iniciar sessão",
     "login.validating": "A validar...",
+    "login.emailNotVerified":
+      "O teu email não está verificado. Consulta a tua caixa de entrada para obter o link de verificação.",
+    "login.invalidCredentials": "Email ou password inválidos.",
+    "login.error": "Não foi possível iniciar sessão. Tenta novamente.",
     "login.footer": "Feito para equipas que vão mais longe.",
     "dashboard.eyebrow": "VISÃO GERAL",
     "dashboard.greeting": "Bom dia, {name} 👋",

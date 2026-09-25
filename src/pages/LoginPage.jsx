@@ -23,7 +23,13 @@ export default function LoginPage() {
         password: form.get("password"),
       });
     } catch (reason) {
-      setError(reason.message || "Não foi possível iniciar sessão.");
+      if (reason.status === 403) {
+        setError(t("login.emailNotVerified"));
+      } else if (reason.status === 401) {
+        setError(t("login.invalidCredentials"));
+      } else {
+        setError(reason.message || t("login.error"));
+      }
     } finally {
       setLoading(false);
     }

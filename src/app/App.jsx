@@ -9,6 +9,7 @@ import CompetitionsPage from "../pages/CompetitionsPage";
 import ResourcePage from "../pages/ResourcePage";
 import TeamSettingsPage from "../pages/TeamSettingsPage";
 import HomePage from "../pages/HomePage";
+import VerifyEmailPage from "../pages/VerifyEmailPage";
 
 function ProtectedRoutes() {
   const { token } = useAuth();
@@ -22,6 +23,7 @@ export default function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/verify-email" element={<VerifyEmailPage />} />
       <Route element={<ProtectedRoutes />}>
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/athletes" element={<AthletesPage />} />
