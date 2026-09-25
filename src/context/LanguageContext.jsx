@@ -63,6 +63,23 @@ const translations = {
     "register.hasAccount": "Already have an account?",
     "register.signIn": "Sign in",
     "register.error": "Could not create your account.",
+    "verification.eyebrow": "EMAIL VERIFICATION",
+    "verification.loadingTitle": "Verifying your email",
+    "verification.loadingDescription": "We are confirming your email address.",
+    "verification.waitingTitle": "Check your inbox",
+    "verification.waitingDescription": "We sent a verification link to {email}.",
+    "verification.waitingDescriptionGeneric":
+      "We sent a verification link to your email address.",
+    "verification.checkInbox":
+      "Open the link in the email to activate your account.",
+    "verification.successTitle": "Email verified",
+    "verification.successDescription":
+      "Your account is active. You can now sign in.",
+    "verification.errorTitle": "Verification failed",
+    "verification.errorDescription":
+      "The verification link may be invalid or expired.",
+    "verification.error": "We could not verify your email.",
+    "verification.goToLogin": "Go to sign in",
     "dashboard.eyebrow": "OVERVIEW",
     "dashboard.greeting": "Good morning, {name} 👋",
     "dashboard.description": "Here is what is happening with your team.",

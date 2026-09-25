@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Alert from "../components/ui/Alert";
 import LanguageSelector from "../components/ui/LanguageSelector";
@@ -9,6 +9,7 @@ import SiteFooter from "../components/layout/SiteFooter";
 export default function RegisterPage() {
   const { token, signUp } = useAuth();
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -20,11 +21,15 @@ export default function RegisterPage() {
     setError("");
     const form = new FormData(event.currentTarget);
     try {
+      const email = form.get("email");
       await signUp({
         managerName: form.get("managerName"),
-        email: form.get("email"),
+        email,
         password: form.get("password"),
         teamName: form.get("teamName"),
+      });
+      navigate(`/verify-email?email=${encodeURIComponent(email)}`, {
+        replace: true,
       });
     } catch (reason) {
       setError(reason.message || t("register.error"));
