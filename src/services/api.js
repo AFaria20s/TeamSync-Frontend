@@ -8,20 +8,16 @@ export class ApiError extends Error {
 }
 
 async function request(path, options = {}) {
-  const { responseType, ...requestOptions } = options;
   const token = localStorage.getItem("teamsync_token");
-  const headers = new Headers(requestOptions.headers);
+  const headers = new Headers(options.headers);
   if (
     !headers.has("Content-Type") &&
-    requestOptions.body &&
-    !(requestOptions.body instanceof FormData)
+    options.body &&
+    !(options.body instanceof FormData)
   )
     headers.set("Content-Type", "application/json");
   if (token) headers.set("Authorization", `Bearer ${token}`);
-  const response = await fetch(`${API_URL}${path}`, {
-    ...requestOptions,
-    headers,
-  });
+  const response = await fetch(`${API_URL}${path}`, { ...options, headers });
   if (response.status === 401) {
     localStorage.removeItem("teamsync_token");
     window.dispatchEvent(new Event("teamsync:unauthorized"));
@@ -30,18 +26,13 @@ async function request(path, options = {}) {
     let message = `Pedido falhou (${response.status})`;
     try {
       const body = await response.json();
-      message =
-        body.message ||
-        body.error ||
-        (Array.isArray(body.errors) ? body.errors.join(", ") : body.errors) ||
-        (typeof body === "string" ? body : message);
+      message = body.message || body.error || message;
     } catch {
       /* API may return an empty error body */
     }
     throw new ApiError(message, response.status);
   }
   if (response.status === 204) return null;
-  if (responseType === "text") return response.text();
   // Some Spring endpoints return 200/201 with an empty body. Do not turn a
   // successful mutation into a client-side JSON parse error.
   const text = await response.text();
@@ -66,10 +57,6 @@ export const api = {
     request("/auth/register", {
       method: "POST",
       body: JSON.stringify(details),
-    }),
-  verifyEmail: (token) =>
-    request(`/auth/verify-email?token=${encodeURIComponent(token)}`, {
-      responseType: "text",
     }),
   manager: () => request("/manager"),
   updateManager: (manager) =>

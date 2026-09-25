@@ -29,7 +29,9 @@ export function AuthProvider({ children }) {
   }
 
   async function signUp(details) {
-    return api.register(details);
+    const result = await api.register(details);
+    localStorage.setItem("teamsync_token", result.token);
+    setToken(result.token);
   }
 
   function signOut() {
