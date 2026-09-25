@@ -50,6 +50,10 @@ const translations = {
     "login.password": "Password",
     "login.submit": "Sign in",
     "login.validating": "Checking...",
+    "login.emailNotVerified":
+      "Your email is not verified. Check your inbox for the verification link.",
+    "login.invalidCredentials": "Invalid email or password.",
+    "login.error": "Could not sign in. Please try again.",
     "login.noAccount": "Don't have an account?",
     "login.register": "Create one",
     "login.footer": "Built for teams that go further.",
@@ -259,6 +263,10 @@ const translations = {
     "login.password": "Password",
     "login.submit": "Iniciar sessão",
     "login.validating": "A validar...",
+    "login.emailNotVerified":
+      "O teu email não está verificado. Consulta a tua caixa de entrada para obter o link de verificação.",
+    "login.invalidCredentials": "Email ou password inválidos.",
+    "login.error": "Não foi possível iniciar sessão. Tenta novamente.",
     "login.footer": "Feito para equipas que vão mais longe.",
     "dashboard.eyebrow": "VISÃO GERAL",
     "dashboard.greeting": "Bom dia, {name} 👋",

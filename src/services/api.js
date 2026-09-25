@@ -30,7 +30,11 @@ async function request(path, options = {}) {
     let message = `Pedido falhou (${response.status})`;
     try {
       const body = await response.json();
-      message = body.message || body.error || message;
+      message =
+        body.message ||
+        body.error ||
+        (Array.isArray(body.errors) ? body.errors.join(", ") : body.errors) ||
+        (typeof body === "string" ? body : message);
     } catch {
       /* API may return an empty error body */
     }
